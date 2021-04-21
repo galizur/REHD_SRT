@@ -21,12 +21,18 @@
     <ClCompile Include="Biohazard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CPULimiter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Biohazard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BaseWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CPULimiter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

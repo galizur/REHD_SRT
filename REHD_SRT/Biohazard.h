@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseWindow.h"
+#include "CPULimiter.h"
 
 #include <string>
 
@@ -24,6 +25,8 @@ class Biohazard : public BaseWindow<Biohazard>
     auto GetBaseAddress() const -> DWORD;
     auto GetCounter() const -> unsigned long long;
 
+    CPULimiter limiter;
+
   private:
     int m_padding{5};
     std::wstring m_healthText{L"Players health:"};
@@ -41,8 +44,6 @@ class Biohazard : public BaseWindow<Biohazard>
     int m_healthPlayer{0};
     int m_healthEnemyOne{0};
     int m_healthEnemyTwo{0};
-
-    unsigned long long Counter{0};
 };
 
 inline auto Biohazard::GetProcessHandle() -> HANDLE
@@ -53,9 +54,4 @@ inline auto Biohazard::GetProcessHandle() -> HANDLE
 inline auto Biohazard::GetBaseAddress() const -> DWORD
 {
     return m_baseAddress;
-}
-
-inline auto Biohazard::GetCounter() const -> unsigned long long
-{
-    return Counter;
 }

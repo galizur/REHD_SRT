@@ -28,17 +28,15 @@ auto WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdSho
 
     while (msg.message != WM_QUIT)
     {
-        if (bhd.GetCounter() > 0.5)
-        {
-            bhd.CalculatePlayersHealth();
-            bhd.CalculateEnemiesHealth();
-        }
+        bhd.CalculatePlayersHealth();
+        bhd.CalculateEnemiesHealth();
         // if (GetMessage(&msg, nullptr, 0, 0))
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+        bhd.limiter.CalculateAndSleep();
     }
 
     return msg.wParam;

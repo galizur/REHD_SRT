@@ -148,11 +148,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Biohazard.cpp" />
+    <ClCompile Include="CPULimiter.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseWindow.h" />
     <ClInclude Include="Biohazard.h" />
+    <ClInclude Include="CPULimiter.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="WinLamb\win10.exe.manifest" />

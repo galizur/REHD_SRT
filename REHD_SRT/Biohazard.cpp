@@ -49,6 +49,8 @@ auto Biohazard::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESUL
         PAINTSTRUCT ps;
         HDC hdc{BeginPaint(m_hwnd, &ps)};
         FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+        SetTextColor(hdc, GetSysColor(COLOR_WINDOWTEXT));
+        SetBkColor(hdc, GetSysColor(COLOR_WINDOW));
         TextOut(hdc, m_padding, 0 + m_padding, m_healthText.c_str(), m_healthText.size());
         TextOut(hdc, m_padding, 30 + m_padding, m_healthEnemyOneText.c_str(), m_healthEnemyOneText.size());
         TextOut(hdc, m_padding, 60 + m_padding, m_healthEnemyTwoText.c_str(), m_healthEnemyTwoText.size());
@@ -57,10 +59,8 @@ auto Biohazard::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESUL
     }
         return 0;
 
-    case EN_CHANGE:
-        // SetWindowText(m_handleHealthPlayer, std::to_wstring(m_healthPlayer).c_str());
-        /*InvalidateRect(m_handleHealthPlayer, NULL, TRUE);
-        UpdateWindow(m_handleHealthPlayer);*/
+    case WM_SYSCOLORCHANGE:
+        InvalidateRect(m_hwnd, nullptr, TRUE);
         return 0;
 
     default:

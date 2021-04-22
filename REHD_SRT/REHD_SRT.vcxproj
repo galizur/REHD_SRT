@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClInclude Include="BaseWindow.h" />
     <ClInclude Include="Biohazard.h" />
+    <ClInclude Include="Framework.h" />
+    <ClInclude Include="TargetVer.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="WinLamb\win10.exe.manifest" />

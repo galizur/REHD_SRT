@@ -11,63 +11,10 @@ constexpr DWORD ENEMY_ONE_OFFSET_SECOND{0x000013BC};
 constexpr DWORD ENEMY_TWO_OFFSET_FIRST{0x00000198};
 constexpr DWORD ENEMY_TWO_OFFSET_SECOND{0x000013BC};
 
-auto Biohazard::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
-{
-    static unsigned __int64 startTime = ::GetTickCount64();
-    const UINT_PTR timerId = 1;
-    switch (uMsg)
-    {
-    case WM_CREATE:
-        m_handleHealthPlayer =
-            CreateWindowEx(WS_EX_STATICEDGE, L"Edit", 0, WS_VISIBLE | WS_CHILD | SS_LEFT | WS_DISABLED, 200,
-                           0 + m_padding, 100, 20, m_hwnd, 0, (HINSTANCE)GetWindowLong(m_hwnd, GWL_HINSTANCE), nullptr);
-        m_handleHealthEnemyOne = CreateWindowEx(
-            WS_EX_STATICEDGE, L"Edit", 0, WS_VISIBLE | WS_CHILD | SS_LEFT | WS_DISABLED, 200, 30 + m_padding, 100, 20,
-            m_hwnd, 0, (HINSTANCE)GetWindowLong(m_hwnd, GWL_HINSTANCE), nullptr);
-        m_handleHealthEnemyTwo = CreateWindowEx(
-            WS_EX_STATICEDGE, L"Edit", 0, WS_VISIBLE | WS_CHILD | SS_LEFT | WS_DISABLED, 200, 60 + m_padding, 100, 20,
-            m_hwnd, 0, (HINSTANCE)GetWindowLong(m_hwnd, GWL_HINSTANCE), nullptr);
-
-        ::SetTimer(m_hwnd, timerId, 1000, nullptr);
-        return 0;
-
-    case WM_TIMER: {
-        unsigned __int64 currTime = ::GetTickCount64();
-        Counter = (currTime - startTime) / 1000;
-        // Value changed -> initiate window update
-        ::InvalidateRect(m_hwnd, nullptr, FALSE);
-        // Re-start timer
-        ::SetTimer(m_hwnd, timerId, 1000, nullptr);
-        return 0;
-    }
-
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
-
-    case WM_PAINT: {
-        PAINTSTRUCT ps;
-        HDC hdc{BeginPaint(m_hwnd, &ps)};
-        FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
-        SetTextColor(hdc, GetSysColor(COLOR_WINDOWTEXT));
-        SetBkColor(hdc, GetSysColor(COLOR_WINDOW));
-        TextOut(hdc, m_padding, 0 + m_padding, m_healthText.c_str(), m_healthText.size());
-        TextOut(hdc, m_padding, 30 + m_padding, m_healthEnemyOneText.c_str(), m_healthEnemyOneText.size());
-        TextOut(hdc, m_padding, 60 + m_padding, m_healthEnemyTwoText.c_str(), m_healthEnemyTwoText.size());
-
-        EndPaint(m_hwnd, &ps);
-    }
-        return 0;
-
-    case WM_SYSCOLORCHANGE:
-        InvalidateRect(m_hwnd, nullptr, TRUE);
-        return 0;
-
-    default:
-        return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
-    }
-    return TRUE;
-}
+// auto Biohazard::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
+//{
+//
+//}
 
 auto Biohazard::FindProcessHandle() -> void
 {

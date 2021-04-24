@@ -4,5 +4,5 @@
 
 #ifdef WINVER
 #undef WINVER
-#define WINVER _WIN32_WINNT_WIN7
 #endif
+#define WINVER _WIN32_WINNT_WIN7

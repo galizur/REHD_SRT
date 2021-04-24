@@ -4,14 +4,14 @@
 
 #include <string>
 
-class Biohazard : public BaseWindow<Biohazard>
+class Biohazard /*: public BaseWindow<Biohazard>*/
 {
   public:
-    auto ClassName() const -> PCWSTR override
+    /*auto ClassName() const -> PCWSTR override
     {
         return L"ReHD_SRT";
     }
-    auto HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT override;
+    auto HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT override;*/
 
     // Memory stuff
     auto FindProcessHandle() -> void;
@@ -22,10 +22,8 @@ class Biohazard : public BaseWindow<Biohazard>
 
     auto GetProcessHandle() -> HANDLE;
     auto GetBaseAddress() const -> DWORD;
-    auto GetCounter() const -> unsigned long long;
 
   private:
-    int m_padding{5};
     std::wstring m_healthText{L"Players health:"};
     std::wstring m_healthEnemyOneText{L"First enemy's health:"};
     std::wstring m_healthEnemyTwoText{L"Second enemy's health:"};
@@ -41,8 +39,6 @@ class Biohazard : public BaseWindow<Biohazard>
     int m_healthPlayer{0};
     int m_healthEnemyOne{0};
     int m_healthEnemyTwo{0};
-
-    unsigned long long Counter{0};
 };
 
 inline auto Biohazard::GetProcessHandle() -> HANDLE
@@ -53,9 +49,4 @@ inline auto Biohazard::GetProcessHandle() -> HANDLE
 inline auto Biohazard::GetBaseAddress() const -> DWORD
 {
     return m_baseAddress;
-}
-
-inline auto Biohazard::GetCounter() const -> unsigned long long
-{
-    return Counter;
 }

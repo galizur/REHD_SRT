@@ -11,11 +11,6 @@ constexpr DWORD ENEMY_ONE_OFFSET_SECOND{0x000013BC};
 constexpr DWORD ENEMY_TWO_OFFSET_FIRST{0x00000198};
 constexpr DWORD ENEMY_TWO_OFFSET_SECOND{0x000013BC};
 
-// auto Biohazard::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
-//{
-//
-//}
-
 auto Biohazard::FindProcessHandle() -> void
 {
     HANDLE snapshot{CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)};
@@ -43,7 +38,6 @@ auto Biohazard::FindProcessHandle() -> void
     {
         return;
     }
-    // m_processHandle = OpenProcess(PROCESS_ALL_ACCESS, false, m_pid);
     m_processHandle = OpenProcess(PROCESS_VM_READ, false, m_pid);
     CloseHandle(snapshot);
 }
@@ -80,43 +74,54 @@ auto Biohazard::FindBaseAddress() -> void
     CloseHandle(snapshot);
 }
 
-auto Biohazard::CalculatePlayersHealth() -> void
+auto Biohazard::CalculatePlayersHealth() -> int
 {
+    // std::lock_guard<std::mutex> lock(m_pHealthMut);
+
     uintptr_t addr{BASE_OFFSET + m_baseAddress};
     uintptr_t health;
     auto rr = ReadProcessMemory(m_processHandle, (BYTE *)addr, &health, sizeof(health), nullptr);
     health += HEALTH_OFFSET_FIRST;
     rr = ReadProcessMemory(m_processHandle, (BYTE *)health, &health, sizeof(health), nullptr);
-    health += HEALTH_OFFSET_SECOND;
-    rr = ReadProcessMemory(m_processHandle, (BYTE *)health, &health, sizeof(health), nullptr);
-
-    if (m_healthPlayer != health)
+    if (health > 0)
     {
-        m_healthPlayer = health;
-        SetWindowText(m_handleHealthPlayer, std::to_wstring(m_healthPlayer).c_str());
-        /*auto r = SendMessage(m_handleHealthPlayer, EN_CHANGE, 0, 0);*/
-        InvalidateRect(m_handleHealthPlayer, nullptr, TRUE);
-        UpdateWindow(m_handleHealthPlayer);
+        health += HEALTH_OFFSET_SECOND;
+        rr = ReadProcessMemory(m_processHandle, (BYTE *)health, &health, sizeof(health), nullptr);
+
+        if (m_healthPlayer != health)
+        {
+            m_healthPlayer = health;
+        }
     }
+    else
+    {
+        m_healthPlayer = 0;
+    }
+
+    return m_healthPlayer;
 }
 
-auto Biohazard::CalculateEnemiesHealth() -> void
+auto Biohazard::CalculateEnemiesHealth() -> std::vector<int>
 {
+    // std::lock_guard<std::mutex> lock(m_eHealthMut);
+
     uintptr_t addr{BASE_OFFSET + m_baseAddress};
     uintptr_t enemyOne;
     auto rr = ReadProcessMemory(m_processHandle, (BYTE *)addr, &enemyOne, sizeof(enemyOne), nullptr);
     enemyOne += ENEMY_ONE_OFFSET_FIRST;
     rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyOne, &enemyOne, sizeof(enemyOne), nullptr);
-    enemyOne += ENEMY_ONE_OFFSET_SECOND;
-    rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyOne, &enemyOne, sizeof(enemyOne), nullptr);
-
-    if (m_healthEnemyOne != enemyOne)
+    if (enemyOne > 0)
     {
-        m_healthEnemyOne = enemyOne;
-        SetWindowText(m_handleHealthEnemyOne, std::to_wstring(m_healthEnemyOne).c_str());
-        /*auto r = SendMessage(m_handleHealthPlayer, EN_CHANGE, 0, 0);*/
-        InvalidateRect(m_handleHealthEnemyOne, nullptr, TRUE);
-        UpdateWindow(m_handleHealthEnemyOne);
+        enemyOne += ENEMY_ONE_OFFSET_SECOND;
+        rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyOne, &enemyOne, sizeof(enemyOne), nullptr);
+        if (m_healthEnemy[0] != enemyOne)
+        {
+            m_healthEnemy[0] = enemyOne;
+        }
+    }
+    else
+    {
+        m_healthEnemy[0] = 0;
     }
 
     addr = BASE_OFFSET + m_baseAddress;
@@ -124,15 +129,20 @@ auto Biohazard::CalculateEnemiesHealth() -> void
     rr = ReadProcessMemory(m_processHandle, (BYTE *)addr, &enemyTwo, sizeof(enemyTwo), nullptr);
     enemyTwo += ENEMY_TWO_OFFSET_FIRST;
     rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyTwo, &enemyTwo, sizeof(enemyTwo), nullptr);
-    enemyTwo += ENEMY_TWO_OFFSET_SECOND;
-    rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyTwo, &enemyTwo, sizeof(enemyTwo), nullptr);
-
-    if (m_healthEnemyTwo != enemyTwo)
+    if (enemyTwo > 0)
     {
-        m_healthEnemyTwo = enemyTwo;
-        SetWindowText(m_handleHealthEnemyTwo, std::to_wstring(m_healthEnemyTwo).c_str());
-        /*auto r = SendMessage(m_handleHealthPlayer, EN_CHANGE, 0, 0);*/
-        InvalidateRect(m_handleHealthEnemyTwo, nullptr, TRUE);
-        UpdateWindow(m_handleHealthEnemyTwo);
+        enemyTwo += ENEMY_TWO_OFFSET_SECOND;
+        rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyTwo, &enemyTwo, sizeof(enemyTwo), nullptr);
+
+        if (m_healthEnemy[1] != enemyTwo)
+        {
+            m_healthEnemy[1] = enemyTwo;
+        }
     }
+    else
+    {
+        m_healthEnemy[1] = 0;
+    }
+
+    return m_healthEnemy;
 }

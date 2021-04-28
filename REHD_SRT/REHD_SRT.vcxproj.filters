@@ -47,15 +47,16 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="WinLamb\win10.exe.manifest">
-      <Filter>Source Files</Filter>
-    </Manifest>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="REHD_SRT.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="REHD_SRT.exe.manifest" />
   </ItemGroup>
 </Project>

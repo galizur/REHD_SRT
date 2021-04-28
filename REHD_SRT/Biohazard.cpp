@@ -1,15 +1,6 @@
 #include "Biohazard.h"
 
 #include <TlHelp32.h>
-#include <process.h>
-
-constexpr uintptr_t BASE_OFFSET{0x009E41BC};
-constexpr uintptr_t HEALTH_OFFSET_FIRST{0x0000014C};
-constexpr uintptr_t HEALTH_OFFSET_SECOND{0x000013BC};
-constexpr DWORD ENEMY_ONE_OFFSET_FIRST{0x00000194};
-constexpr DWORD ENEMY_ONE_OFFSET_SECOND{0x000013BC};
-constexpr DWORD ENEMY_TWO_OFFSET_FIRST{0x00000198};
-constexpr DWORD ENEMY_TWO_OFFSET_SECOND{0x000013BC};
 
 auto Biohazard::FindProcessHandle() -> void
 {
@@ -76,16 +67,14 @@ auto Biohazard::FindBaseAddress() -> void
 
 auto Biohazard::CalculatePlayersHealth() -> int
 {
-    // std::lock_guard<std::mutex> lock(m_pHealthMut);
-
-    uintptr_t addr{BASE_OFFSET + m_baseAddress};
+    uintptr_t addr{offset::base + m_baseAddress};
     uintptr_t health;
     auto rr = ReadProcessMemory(m_processHandle, (BYTE *)addr, &health, sizeof(health), nullptr);
-    health += HEALTH_OFFSET_FIRST;
+    health += offset::health::playerFirst;
     rr = ReadProcessMemory(m_processHandle, (BYTE *)health, &health, sizeof(health), nullptr);
     if (health > 0)
     {
-        health += HEALTH_OFFSET_SECOND;
+        health += offset::health::playerSecond;
         rr = ReadProcessMemory(m_processHandle, (BYTE *)health, &health, sizeof(health), nullptr);
 
         if (m_healthPlayer != health)
@@ -103,16 +92,14 @@ auto Biohazard::CalculatePlayersHealth() -> int
 
 auto Biohazard::CalculateEnemiesHealth() -> std::vector<int>
 {
-    // std::lock_guard<std::mutex> lock(m_eHealthMut);
-
-    uintptr_t addr{BASE_OFFSET + m_baseAddress};
+    uintptr_t addr{offset::base + m_baseAddress};
     uintptr_t enemyOne;
     auto rr = ReadProcessMemory(m_processHandle, (BYTE *)addr, &enemyOne, sizeof(enemyOne), nullptr);
-    enemyOne += ENEMY_ONE_OFFSET_FIRST;
+    enemyOne += offset::health::enemyOneFirst;
     rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyOne, &enemyOne, sizeof(enemyOne), nullptr);
     if (enemyOne > 0)
     {
-        enemyOne += ENEMY_ONE_OFFSET_SECOND;
+        enemyOne += offset::health::enemyOneSecond;
         rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyOne, &enemyOne, sizeof(enemyOne), nullptr);
         if (m_healthEnemy[0] != enemyOne)
         {
@@ -124,14 +111,14 @@ auto Biohazard::CalculateEnemiesHealth() -> std::vector<int>
         m_healthEnemy[0] = 0;
     }
 
-    addr = BASE_OFFSET + m_baseAddress;
+    addr = offset::base + m_baseAddress;
     uintptr_t enemyTwo;
     rr = ReadProcessMemory(m_processHandle, (BYTE *)addr, &enemyTwo, sizeof(enemyTwo), nullptr);
-    enemyTwo += ENEMY_TWO_OFFSET_FIRST;
+    enemyTwo += offset::health::enemyTwoFirst;
     rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyTwo, &enemyTwo, sizeof(enemyTwo), nullptr);
     if (enemyTwo > 0)
     {
-        enemyTwo += ENEMY_TWO_OFFSET_SECOND;
+        enemyTwo += offset::health::enemyTwoSecond;
         rr = ReadProcessMemory(m_processHandle, (BYTE *)enemyTwo, &enemyTwo, sizeof(enemyTwo), nullptr);
 
         if (m_healthEnemy[1] != enemyTwo)

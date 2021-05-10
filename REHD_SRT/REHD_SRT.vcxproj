@@ -154,17 +154,16 @@
   <ItemGroup>
     <ClInclude Include="BaseWindow.h" />
     <ClInclude Include="Biohazard.h" />
-    <ClInclude Include="Constants.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="TargetVer.h" />
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="REHD_SRT.rc" />
+    <Manifest Include="WinLamb\win10.exe.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="REHD_SRT.exe.manifest" />
+    <ResourceCompile Include="REHD_SRT.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

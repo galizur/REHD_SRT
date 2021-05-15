@@ -13,6 +13,8 @@
 //#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
+#include "resource.h"
+
 #include <CommCtrl.h>
 //#pragma warning(push)
 //#pragma warning(disable : 4458)

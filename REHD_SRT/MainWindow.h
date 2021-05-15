@@ -26,17 +26,19 @@ class MainWindow
     auto WorkLoop() -> int;
 
   private:
+    // Class
     static constexpr wchar_t wndClass[] = L"MainWndClass";
-
-    HFONT m_guiFont{0};
-    LOGFONTW m_lfGuiFont{0};
-    unsigned short m_currentDpi{0};
     HWND m_hwnd;
     HINSTANCE m_hInstance;
     int m_nShowCmd;
-
+    // Font
+    HFONT m_guiFont{0};
+    LOGFONTW m_lfGuiFont{0};
+    // Controls
     HWND m_waitingText{nullptr};
-
+    std::unique_ptr<Gdiplus::Bitmap> m_healthEmptyBitmap;
+    // Size
+    unsigned short m_currentDpi{0};
     const int m_controllPadding{10};
     const int m_waitingTextHeight{16};
     const int m_waitingTextWidth{360};

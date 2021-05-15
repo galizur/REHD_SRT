@@ -156,12 +156,24 @@
     <ClInclude Include="Biohazard.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="Compatibility.manifest" />
     <Manifest Include="PerMonitorV2.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="REHD_SRT.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="OldHealth\caution1.gif" />
+    <Image Include="OldHealth\caution2.gif" />
+    <Image Include="OldHealth\danger.gif" />
+    <Image Include="OldHealth\EMPTY.gif" />
+    <Image Include="OldHealth\fine.gif" />
+    <Image Include="OldHealth\poison.gif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

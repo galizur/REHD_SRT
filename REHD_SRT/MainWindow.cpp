@@ -101,6 +101,7 @@ auto MainWindow::OnCreate() -> LRESULT
     m_currentDpi = GetWindowDpi(m_hwnd);
 
     // Load resources
+    m_healthEmptyBitmap = LoadGIFAsGdiplusBitmap(m_hInstance, IDG_HEALTH_EMPTY);
 
     // Create the main GUI font.
     wcscpy_s(m_lfGuiFont.lfFaceName, L"Courier New Bold");
@@ -193,6 +194,15 @@ auto MainWindow::OnPaint() -> LRESULT
     // Fill the window with the window background color.
     RECT rcBackground{rcWindow};
     FillRect(hMemDC, &rcBackground, GetSysColorBrush(COLOR_BTNFACE));
+
+    // Draw Health in top left corner
+    int destBitmapHeight{MulDiv(m_healthEmptyBitmap->GetHeight(), m_currentDpi, windowsReferenceDPI)};
+    int destBitmapWidth{MulDiv(m_healthEmptyBitmap->GetWidth(), m_currentDpi, windowsReferenceDPI)};
+    int destBitmapX{rcWindow.top};
+    int destBitmapY{rcWindow.left};
+
+    Gdiplus::Graphics g(hMemDC);
+    g.DrawImage(m_healthEmptyBitmap.get(), destBitmapX, destBitmapY, destBitmapWidth, destBitmapHeight);
 
     // End painting by copying the in-memory DC.
     BitBlt(hdc, 0, 0, rcWindow.right, rcWindow.bottom, hMemDC, 0, 0, SRCCOPY);

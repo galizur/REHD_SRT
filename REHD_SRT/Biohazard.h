@@ -1,8 +1,12 @@
 #pragma once
 
-#include "BaseWindow.h"
+// #include "BaseWindow.h"
 
+#include <mutex>
 #include <string>
+#include <vector>
+
+#include <Windows.h>
 
 class Biohazard /*: public BaseWindow<Biohazard>*/
 {

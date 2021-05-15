@@ -13,8 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Windows">
-      <UniqueIdentifier>{3ac47b06-786a-44e4-93bf-a93a600aab37}</UniqueIdentifier>
+    <Filter Include="Manifests">
+      <UniqueIdentifier>{f1773d86-116b-4ef8-88a1-693b50bcc278}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +24,10 @@
     <ClCompile Include="Biohazard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UserInterface.cpp">
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,30 +35,25 @@
     <ClInclude Include="Biohazard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseWindow.h">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="Framework.h">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="TargetVer.h">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="UserInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="WinLamb\win10.exe.manifest">
-      <Filter>Source Files</Filter>
+    <Manifest Include="PerMonitorV2.manifest">
+      <Filter>Manifests</Filter>
     </Manifest>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="REHD_SRT.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <Manifest Include="Compatibility.manifest">
+      <Filter>Manifests</Filter>
+    </Manifest>
   </ItemGroup>
 </Project>

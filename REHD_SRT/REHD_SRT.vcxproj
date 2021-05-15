@@ -149,21 +149,19 @@
   <ItemGroup>
     <ClCompile Include="Biohazard.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="UserInterface.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseWindow.h" />
     <ClInclude Include="Biohazard.h" />
     <ClInclude Include="Framework.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="TargetVer.h" />
-    <ClInclude Include="UserInterface.h" />
+    <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="WinLamb\win10.exe.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="REHD_SRT.rc" />
+    <Manifest Include="Compatibility.manifest" />
+    <Manifest Include="PerMonitorV2.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

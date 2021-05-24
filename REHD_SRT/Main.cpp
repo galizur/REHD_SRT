@@ -16,7 +16,7 @@ auto WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     // Initialize standard controls
     INITCOMMONCONTROLSEX icc;
     icc.dwSize = sizeof(icc);
-    icc.dwICC = ICC_STANDARD_CLASSES | ICC_ANIMATE_CLASS;
+    icc.dwICC = ICC_STANDARD_CLASSES | ICC_ANIMATE_CLASS | ICC_PROGRESS_CLASS;
     InitCommonControlsEx(&icc);
 
     int returnValue{1};

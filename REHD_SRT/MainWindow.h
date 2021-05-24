@@ -5,6 +5,7 @@
 class MainWindow
 {
   public:
+    ~MainWindow();
     auto GetCurrentDpi() const -> unsigned short
     {
         return m_currentDpi;
@@ -36,7 +37,10 @@ class MainWindow
     LOGFONTW m_lfGuiFont{0};
     // Controls
     HWND m_waitingText{nullptr};
-    std::unique_ptr<Gdiplus::Bitmap> m_healthEmptyBitmap;
+    HWND m_enemyHealthBar{nullptr};
+    // std::unique_ptr<Gdiplus::Bitmap> m_healthFineBitmap;
+    std::unique_ptr<Gdiplus::Image> m_healthFineBitmap;
+    std::unique_ptr<Gdiplus::Image> m_healthCautionBitmap;
     // Size
     unsigned short m_currentDpi{0};
     const int m_controllPadding{10};
@@ -50,5 +54,6 @@ class MainWindow
     auto OnDestroy() -> LRESULT;
     auto OnDpiChange(WPARAM wParam, LPARAM lParam) -> LRESULT;
     auto OnPaint() -> LRESULT;
-    auto onSize() -> LRESULT;
+    auto OnSize() -> LRESULT;
+    auto OnDrawItem() -> LRESULT;
 };

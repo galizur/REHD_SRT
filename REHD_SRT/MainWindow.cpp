@@ -9,6 +9,18 @@ MainWindow::MainWindow(HINSTANCE hInstance, int nShowCmd) : m_hInstance{hInstanc
 {
 }
 
+MainWindow::~MainWindow()
+{
+    if (m_healthFineBitmap)
+    {
+        m_healthFineBitmap.release();
+    }
+    if (m_healthCautionBitmap)
+    {
+        m_healthCautionBitmap.release();
+    }
+}
+
 auto MainWindow::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
 {
     MainWindow *mainWindow{InstanceFromWndProc<MainWindow, MainWindow, &MainWindow::m_hwnd>(hWnd, uMsg, lParam)};
@@ -29,7 +41,9 @@ auto MainWindow::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> 
         case WM_PAINT:
             return mainWindow->OnPaint();
         case WM_SIZE:
-            return mainWindow->onSize();
+            return mainWindow->OnSize();
+        case WM_DRAWITEM:
+            return mainWindow->OnDrawItem();
         }
     }
 
@@ -101,7 +115,8 @@ auto MainWindow::OnCreate() -> LRESULT
     m_currentDpi = GetWindowDpi(m_hwnd);
 
     // Load resources
-    m_healthEmptyBitmap = LoadGIFAsGdiplusBitmap(m_hInstance, IDG_HEALTH_EMPTY);
+    m_healthFineBitmap = LoadGIFAsGdiplusBitmap(m_hInstance, IDG_HEALTH_FINE);
+    m_healthCautionBitmap = LoadGIFAsGdiplusBitmap(m_hInstance, IDG_HEALTH_CAUTION1);
 
     // Create the main GUI font.
     wcscpy_s(m_lfGuiFont.lfFaceName, L"Courier New Bold");
@@ -120,6 +135,15 @@ auto MainWindow::OnCreate() -> LRESULT
     m_waitingText = CreateWindowExW(0, WC_STATICW, L"Waiting for Biohazard HD Remaster...", WS_CHILD | SS_CENTER, 0, 0,
                                     0, 0, m_hwnd, nullptr, nullptr, nullptr);
     SendMessageW(m_waitingText, WM_SETFONT, reinterpret_cast<WPARAM>(m_guiFont), MAKELPARAM(TRUE, 0));
+
+    // TEST
+    m_enemyHealthBar = CreateWindowExW(0, PROGRESS_CLASSW, (LPTSTR)NULL, WS_CHILD | WS_VISIBLE | PBS_SMOOTHREVERSE, 0,
+                                       0, 0, 0, m_hwnd, nullptr, nullptr, nullptr);
+
+    SetWindowTheme(m_enemyHealthBar, L"", L"");
+    SendMessage(m_enemyHealthBar, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
+    SendMessage(m_enemyHealthBar, PBM_SETPOS, (WPARAM)100, 0);
+    SendMessage(m_enemyHealthBar, PBM_SETBARCOLOR, 0, (LPARAM)RGB(138, 3, 3));
 
     // Set the main window size.
     int height = MulDiv(windowHeight, m_currentDpi, windowsReferenceDPI);
@@ -196,13 +220,13 @@ auto MainWindow::OnPaint() -> LRESULT
     FillRect(hMemDC, &rcBackground, GetSysColorBrush(COLOR_BTNFACE));
 
     // Draw Health in top left corner
-    int destBitmapHeight{MulDiv(m_healthEmptyBitmap->GetHeight(), m_currentDpi, windowsReferenceDPI)};
-    int destBitmapWidth{MulDiv(m_healthEmptyBitmap->GetWidth(), m_currentDpi, windowsReferenceDPI)};
+    int destBitmapHeight{MulDiv(m_healthFineBitmap->GetHeight(), m_currentDpi, windowsReferenceDPI)};
+    int destBitmapWidth{MulDiv(m_healthFineBitmap->GetWidth(), m_currentDpi, windowsReferenceDPI)};
     int destBitmapX{rcWindow.top};
     int destBitmapY{rcWindow.left};
 
     Gdiplus::Graphics g(hMemDC);
-    g.DrawImage(m_healthEmptyBitmap.get(), destBitmapX, destBitmapY, destBitmapWidth, destBitmapHeight);
+    g.DrawImage(m_healthFineBitmap.get(), destBitmapX, destBitmapY, destBitmapWidth, destBitmapHeight);
 
     // End painting by copying the in-memory DC.
     BitBlt(hdc, 0, 0, rcWindow.right, rcWindow.bottom, hMemDC, 0, 0, SRCCOPY);
@@ -213,14 +237,14 @@ auto MainWindow::OnPaint() -> LRESULT
     return 0;
 }
 
-auto MainWindow::onSize() -> LRESULT
+auto MainWindow::OnSize() -> LRESULT
 {
     // Get the window size.
     RECT rcWindow;
     GetClientRect(m_hwnd, &rcWindow);
 
     // Move and redraw stuff.
-    HDWP hDwp{BeginDeferWindowPos(1)};
+    HDWP hDwp{BeginDeferWindowPos(3)};
     if (!hDwp)
     {
         return 0;
@@ -233,6 +257,18 @@ auto MainWindow::onSize() -> LRESULT
     int waitingTextY{rcWindow.bottom / 2 - controlPadding / 2 - waitingTextHeight / 2};
     hDwp = DeferWindowPos(hDwp, m_waitingText, nullptr, waitingTextX, waitingTextY, waitingTextWidth, waitingTextHeight,
                           0);
+
+    if (!hDwp)
+    {
+        return 0;
+    }
+
+    const int enemyHealthBarHeight{MulDiv(15, m_currentDpi, windowsReferenceDPI)};
+    const int enemyHealthBarWidth{MulDiv(150, m_currentDpi, windowsReferenceDPI)};
+    const int enemyHealthBarX{0};
+    const int enemyHealthBarY{MulDiv(70, m_currentDpi, windowsReferenceDPI)};
+    hDwp = DeferWindowPos(hDwp, m_enemyHealthBar, nullptr, enemyHealthBarX, enemyHealthBarY, enemyHealthBarWidth,
+                          enemyHealthBarHeight, 0);
     if (!hDwp)
     {
         return 0;
@@ -241,4 +277,9 @@ auto MainWindow::onSize() -> LRESULT
     EndDeferWindowPos(hDwp);
 
     return 0;
+}
+
+auto MainWindow::OnDrawItem() -> LRESULT
+{
+    return LRESULT();
 }

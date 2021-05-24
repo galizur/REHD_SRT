@@ -3,6 +3,11 @@
 // Used by REHD_SRT.rc
 //
 #define IDG_HEALTH_EMPTY                        102
+#define IDG_HEALTH_FINE                         103
+#define IDG_HEALTH_CAUTION1                     104
+#define IDG_HEALTH_CAUTION2                     105
+#define IDG_HEALTH_DANGER                       106
+#define IDG_HEALTH_POISON                       107
 
 // Next default values for new objects
 // 

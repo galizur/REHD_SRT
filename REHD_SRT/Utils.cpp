@@ -64,7 +64,8 @@ auto LoadStringAsWstr(HINSTANCE hInstance, UINT uID) -> std::wstring
     return std::wstring(pws, cch);
 }
 
-auto LoadGIFAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gdiplus::Bitmap>
+// auto LoadGIFAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gdiplus::Bitmap>
+auto LoadGIFAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gdiplus::Image>
 {
     HRSRC findResource{FindResourceW(hInstance, MAKEINTRESOURCEW(uID), L"GIF")};
     if (findResource == nullptr)
@@ -90,7 +91,7 @@ auto LoadGIFAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gd
         return nullptr;
     }
 
-    std::unique_ptr<Gdiplus::Bitmap> bitmap;
+    std::unique_ptr<Gdiplus::Image> bitmap;
     HGLOBAL buffer{GlobalAlloc(GMEM_MOVEABLE, dwSize)};
     if (buffer)
     {
@@ -102,7 +103,7 @@ auto LoadGIFAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gd
             IStream *stream;
             if (CreateStreamOnHGlobal(pBuffer, FALSE, &stream) == S_OK)
             {
-                bitmap.reset(Gdiplus::Bitmap::FromStream(stream));
+                bitmap.reset(Gdiplus::Image::FromStream(stream));
                 stream->Release();
             }
             GlobalUnlock(pBuffer);

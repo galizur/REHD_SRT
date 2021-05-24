@@ -7,6 +7,7 @@
 
 #pragma comment(lib, "Comctl32.lib")
 #pragma comment(lib, "Gdiplus.lib")
+#pragma comment(lib, "UxTheme.lib")
 
 #include "targetver.h"
 
@@ -20,6 +21,8 @@
 //#pragma warning(disable : 4458)
 #include <gdiplus.h>
 //#pragma warning(pop)
+
+#include <Uxtheme.h>
 
 #include <memory>
 #include <string>

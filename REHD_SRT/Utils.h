@@ -33,5 +33,6 @@ template <class T, class U, HWND(U::*m_hWnd)> T *InstanceFromWndProc(HWND hWnd, 
 auto GetWindowDpi(HWND hWnd) -> unsigned short;
 auto SafeLoadSystemLibrary(const std::wstring &libraryFile) -> HMODULE;
 auto LoadStringAsWstr(HINSTANCE hInstance, UINT uID) -> std::wstring;
-auto LoadGIFAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gdiplus::Bitmap>;
+// auto LoadGIFAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gdiplus::Bitmap>;
+auto LoadGIFAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gdiplus::Image>;
 auto LoadPNGAsGdiplusBitmap(HINSTANCE hInstance, UINT uID) -> std::unique_ptr<Gdiplus::Bitmap>;

@@ -51,6 +51,11 @@ END
 //
 
 IDG_HEALTH_EMPTY        GIF                     "OldHealth\\EMPTY.gif"
+IDG_HEALTH_FINE         GIF                     "OldHealth\\fine.gif"
+IDG_HEALTH_CAUTION1     GIF                     "OldHealth\\caution1.gif"
+IDG_HEALTH_CAUTION2     GIF                     "OldHealth\\caution2.gif"
+IDG_HEALTH_DANGER       GIF                     "OldHealth\\danger.gif"
+IDG_HEALTH_POISON       GIF                     "OldHealth\\poison.gif"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
